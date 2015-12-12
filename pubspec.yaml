@@ -1,0 +1,11 @@
+name: corsac_router
+version: 0.1.0-dev
+description: Simple HTTP routing library for server-side applications.
+author: Anatoly Pulyaevskiy <anatoly.pulyaevskiy@gmail.com>
+homepage: https://github.com/corsac-dart/router
+
+environment:
+  sdk: '>=1.9.0 <2.0.0'
+
+dev_dependencies:
+  test: "^0.12.4+7"
