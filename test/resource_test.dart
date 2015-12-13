@@ -15,6 +15,11 @@ void main() {
       expect(r.matches(Uri.parse('/users/1'), 'GET'), isFalse);
     });
 
+    test("it matches only route without HTTP method", () {
+      HttpResource r = new HttpResource('/users', ['GET']);
+      expect(r.matches(Uri.parse('/users')), isTrue);
+    });
+
     test("it matches route with parameter", () {
       HttpResource r = new HttpResource('/users/{userId}', ['GET']);
       expect(r.matches(Uri.parse('/users/234'), 'GET'), isTrue);

@@ -1,5 +1,10 @@
 # Corsac Dart HTTP routing library
 
+[![Build Status](https://img.shields.io/travis-ci/corsac-dart/router.svg?branch=master&style=flat-square)](https://travis-ci.org/corsac-dart/router)
+[![Coverage Status](https://img.shields.io/coveralls/corsac-dart/router.svg?branch=master&style=flat-square)](https://coveralls.io/github/corsac-dart/router?branch=master)
+[![License](https://img.shields.io/badge/license-BSD--2-blue.svg?style=flat-square)](https://raw.githubusercontent.com/corsac-dart/router/master/LICENSE)
+
+
 Simple HTTP routing library for server-side applications.
 
 ## Installation
