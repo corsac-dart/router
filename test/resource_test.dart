@@ -1,4 +1,4 @@
-library corsac_router.test;
+library corsac_router.test.resource;
 
 import 'package:test/test.dart';
 import 'package:corsac_router/corsac_router.dart';
