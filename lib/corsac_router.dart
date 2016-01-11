@@ -15,6 +15,7 @@
 library corsac_router;
 
 import 'package:collection/equality.dart';
+import 'package:quiver/core.dart';
 
 part 'src/resource.dart';
 part 'src/router.dart';

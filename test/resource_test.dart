@@ -50,5 +50,24 @@ void main() {
       expect(
           r.matches(Uri.parse('/users'), attributes: {#version: '1'}), isTrue);
     });
+
+    test('equality', () {
+      var r1 = new HttpResource('/users', ['GET'], attributes: {#version: '1'});
+      var r2 = new HttpResource('/users', ['GET'], attributes: {#version: '1'});
+      var r3 = new HttpResource('/users', ['GET']);
+      var r4 = new HttpResource('/users', ['GET'], attributes: {#version: '2'});
+      var r5 = new HttpResource('/users', ['GET'], attributes: {#otherke: '1'});
+      var r6 = new HttpResource('/users', ['PUT'], attributes: {#version: '1'});
+      var r7 = new HttpResource('/posts', ['GET'], attributes: {#version: '1'});
+      var r8 = new HttpResource('/users', ['get'], attributes: {#version: '1'});
+
+      expect(r1, equals(r2));
+      expect(r1, isNot(equals(r3)));
+      expect(r1, isNot(equals(r4)));
+      expect(r1, isNot(equals(r5)));
+      expect(r1, isNot(equals(r6)));
+      expect(r1, isNot(equals(r7)));
+      expect(r1, equals(r8));
+    });
   });
 }

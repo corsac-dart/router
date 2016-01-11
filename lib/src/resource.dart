@@ -45,7 +45,7 @@ class HttpResource {
         httpMethods =
             new List.unmodifiable(httpMethods.map((i) => i.toUpperCase())),
         parameters = _extractPathParameters(path),
-        attributes = attributes;
+        attributes = attributes ?? new Map();
 
   /// Returns true if provided [uri], [httpMethod] and [attributes] match
   /// this resource.
@@ -57,8 +57,13 @@ class HttpResource {
     } else {
       result = pathRegExp.hasMatch(uri.path);
     }
-    var eq = const MapEquality();
-    return result ? eq.equals(this.attributes, attributes) : false;
+
+    if (this.attributes.isNotEmpty) {
+      var eq = const MapEquality();
+      return result ? eq.equals(this.attributes, attributes) : false;
+    } else {
+      return result;
+    }
   }
 
   /// Matches provided [uri] and [httpMethod] and returns list of extracted
@@ -78,6 +83,20 @@ class HttpResource {
     }
 
     return resolvedParams;
+  }
+
+  bool operator ==(HttpResource o) {
+    final listEq = const ListEquality();
+    final mapEq = const MapEquality();
+    return o is HttpResource &&
+        (o.path == this.path) &&
+        listEq.equals(o.httpMethods, this.httpMethods) &&
+        mapEq.equals(o.attributes, this.attributes);
+  }
+
+  int get hashCode {
+    return hash4(path, hashObjects(httpMethods), hashObjects(attributes.keys),
+        hashObjects(attributes.values));
   }
 
   static RegExp _buildPathRegExp(String parametrizedPath) {
