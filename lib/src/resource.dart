@@ -1,9 +1,9 @@
 part of corsac_router;
 
-/// Represents parametrized HTTP (REST) resource.
+/// Represents a parametrized HTTP (REST) resource.
 ///
-/// Resources are defined by parametrized [path] template and a list of
-/// allowed [httpMethods].
+/// Resources are defined by a [path] template and a list of
+/// allowed [httpMethods]. Optional [attributes] map can be provided as well.
 class HttpResource {
   static final RegExp _paramMatcher = new RegExp(r"{[a-zA-Z0-9]+}");
   static final String _paramRegExp = "([^\/]+)";
@@ -20,6 +20,8 @@ class HttpResource {
   /// List of parameter names for this resource.
   final List<String> parameters;
 
+  final Map attributes;
+
   /// Creates new HttpResource.
   ///
   /// [path] is a parametrized template of [Uri] path. Parameters must be
@@ -30,21 +32,33 @@ class HttpResource {
   ///     /users/{userId}/status/{status}
   ///
   /// [httpMethods] must contain a list of allowed (supported) HTTP methods.
-  HttpResource(String path, List<String> httpMethods)
+  ///
+  /// The [attributes] parameter can contain arbitrary data. These attributes
+  /// (if provided) will be included in matching process, a match will only
+  /// occur if attributes associated with the resource are equal to the value
+  /// passed to `matches` method.
+  ///
+  /// Typical example of an attribute is a version of an HTTP API.
+  HttpResource(String path, List<String> httpMethods, {Map attributes})
       : path = path,
         pathRegExp = _buildPathRegExp(path),
         httpMethods =
             new List.unmodifiable(httpMethods.map((i) => i.toUpperCase())),
-        parameters = _extractPathParameters(path);
+        parameters = _extractPathParameters(path),
+        attributes = attributes;
 
-  /// Returns true if provided [uri] and [httpMethod] match this resource.
-  bool matches(Uri uri, [String httpMethod]) {
+  /// Returns true if provided [uri], [httpMethod] and [attributes] match
+  /// this resource.
+  bool matches(Uri uri, {String httpMethod, Map attributes}) {
+    var result = false;
     if (httpMethod != null) {
-      return this.httpMethods.contains(httpMethod.toUpperCase()) &&
+      result = this.httpMethods.contains(httpMethod.toUpperCase()) &&
           this.pathRegExp.hasMatch(uri.path);
     } else {
-      return pathRegExp.hasMatch(uri.path);
+      result = pathRegExp.hasMatch(uri.path);
     }
+    var eq = const MapEquality();
+    return result ? eq.equals(this.attributes, attributes) : false;
   }
 
   /// Matches provided [uri] and [httpMethod] and returns list of extracted

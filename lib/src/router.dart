@@ -14,25 +14,34 @@ class Router {
   final Map<HttpResource, dynamic> resources = {};
 
   /// Matches [uri] and [httpMethod] to a resource.
-  MatchResult match(Uri uri, String httpMethod) {
-    var resource = resources.keys
-        .firstWhere((r) => r.matches(uri, httpMethod), orElse: () => null);
+  MatchResult match(Uri uri, String httpMethod, {Map attributes}) {
+    var resource = resources.keys.firstWhere(
+        (r) => r.matches(uri, httpMethod: httpMethod, attributes: attributes),
+        orElse: () => null);
     if (resource is HttpResource) {
-      return new MatchResult(
-          resource, resources[resource], resource.resolveParameters(uri));
+      return new MatchResult(resource, resources[resource],
+          resource.resolveParameters(uri), resource.attributes);
     } else {
-      return new MatchResult(null, null, null);
+      return new MatchResult(null, null, null, null);
     }
   }
 }
 
 /// Result of matching an [Uri] with [Router].
 class MatchResult {
+  /// Matching HTTP resource.
   final HttpResource resource;
+
+  /// Data associated with the resource.
   final dynamic data;
+
+  /// Resource parameters extracted from the `Uri`.
   final Map<String, String> parameters;
 
-  MatchResult(this.resource, this.data, this.parameters);
+  /// User-defined custom attributes associated with the resource.
+  final Map attributes;
+
+  MatchResult(this.resource, this.data, this.parameters, this.attributes);
 
   bool get hasMatch => this.resource is HttpResource;
 }
