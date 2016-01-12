@@ -39,11 +39,11 @@ class HttpResource {
   /// passed to `matches` method.
   ///
   /// Typical example of an attribute is a version of an HTTP API.
-  HttpResource(String path, List<String> httpMethods, {Map attributes})
+  HttpResource(String path, Iterable<String> httpMethods, {Map attributes})
       : path = path,
         pathRegExp = _buildPathRegExp(path),
-        httpMethods =
-            new List.unmodifiable(httpMethods.map((i) => i.toUpperCase())),
+        httpMethods = new List.unmodifiable(
+            httpMethods.map((i) => i.toUpperCase()).toSet()),
         parameters = _extractPathParameters(path),
         attributes = attributes ?? new Map();
 
