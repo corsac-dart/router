@@ -7,7 +7,9 @@ homepage: https://github.com/corsac-dart/router
 environment:
   sdk: '>=1.9.0 <2.0.0'
 
+dependencies:
+    quiver: "^0.21.4"
+
 dev_dependencies:
-  quiver: "^0.21.4"
   test: "^0.12.4+7"
   dart_coveralls: "^0.4.0"
